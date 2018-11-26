@@ -1,0 +1,15 @@
+<service>
+ <parameter locked="false" name="ServiceClass">dk.digst.nemkonto.poc.devenvdemo.NemKontoService</parameter>
+ <operation name="hasNemKontoFromID">
+  <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+ </operation>
+ <operation name="getNemKontoFromID">
+  <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+ </operation>
+ <operation name="getIDFromNemKonto">
+  <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+ </operation>
+ <operation name="configureBaseData">
+  <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+ </operation>
+</service>

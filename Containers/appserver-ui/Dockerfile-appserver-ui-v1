@@ -1,0 +1,9 @@
+FROM centos:7
+RUN yum -y install httpd
+RUN yum clean all
+WORKDIR /root
+ADD run-httpd.sh /root
+RUN chmod -v +x run-httpd.sh
+ADD www/* /var/www/html/
+ENTRYPOINT ["/root/run-httpd.sh"]
+EXPOSE 80 443

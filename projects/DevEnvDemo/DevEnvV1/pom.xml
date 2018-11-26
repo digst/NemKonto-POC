@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>dk.digst.nemkonto.poc</groupId>
+  <artifactId>devenv</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>NemKonto POC</name>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+         <groupId>org.apache.axis2</groupId>
+         <artifactId>axis2-aar-maven-plugin</artifactId>
+         <version>1.6.2</version>
+         <extensions>true</extensions>
+         <configuration>
+          <servicesXmlFile>conf/services.xml</servicesXmlFile>
+         </configuration>
+         <executions>
+             <execution>
+                 <goals>
+                     <goal>aar</goal>
+                 </goals>
+             </execution>
+			<execution>
+				<id>deployaar</id>
+				<goals>
+					<goal>deployaar</goal>
+				</goals>
+				<phase>install</phase>
+				<configuration>
+					<axis2AdminConsoleURL>http://localhost:7575/axis2/axis2-admin/</axis2AdminConsoleURL>
+					<axis2AdminUser>admin</axis2AdminUser>
+					<axis2AdminPassword>axis2</axis2AdminPassword>
+					<aarDirectory>target/aar</aarDirectory>
+				</configuration>
+			</execution>
+         </executions>
+        </plugin>
+      </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>mapr-releases</id>
+      <url>http://repository.mapr.com/maven/</url>
+    </repository>
+  </repositories>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+	<dependency>
+	    <groupId>com.mapr.db</groupId>
+	    <artifactId>maprdb</artifactId>
+	    <version>5.0.9-mapr</version>
+	</dependency>
+  </dependencies>
+
+</project>

@@ -1,0 +1,21 @@
+FROM centos:7
+RUN yum -y install wget unzip ant java-1.8.0-openjdk.i686 nano
+RUN wget --directory-prefix=/tmp http://dk.mirrors.quenda.co/apache/axis/axis2/java/core/1.7.8/axis2-1.7.8-bin.zip
+RUN unzip /tmp/axis2-1.7.8-bin.zip -d /usr
+RUN adduser axis2
+RUN chown axis2.axis2 /usr/axis2-1.7.8
+RUN chown axis2.axis2 /usr/axis2-1.7.8/* -R
+RUN runuser -l axis2 -c 'ln -s /usr/axis2-1.7.8 /home/axis2/axis2-1.7.8'
+RUN runuser -l axis2 -c 'ant -noinput -buildfile /usr/axis2-1.7.8/webapp/build.xml'
+RUN runuser -l axis2 -c 'printf "\nexport JAVA_HOME=/etc/alternatives/openjdk-1.8.0\n" >> ~/.bashrc'
+RUN mkdir /root/conf
+RUN echo "demo.mapr.com secure=false maprdemo:7222" > /root/conf/mapr-clusters.conf
+RUN runuser -l axis2 -c 'mkdir /home/axis2/conf'
+RUN echo "demo.mapr.com secure=false maprdemo:7222" > /home/axis2/conf/mapr-clusters.conf
+RUN echo "export MAPR_HOME=/root" >> /root/.bashrc
+RUN echo "export MAPR_HOME=/home/axis2" >> /home/axis2/.bashrc
+ADD services/* /usr/axis2-1.7.8/repository/services/
+ADD mapr.login.conf /usr/axis2-1.7.8
+ADD axis2server.sh /usr/axis2-1.7.8/bin
+ENTRYPOINT ["runuser", "-l", "axis2", "-c", "/usr/axis2-1.7.8/bin/axis2server.sh"]
+EXPOSE 8080

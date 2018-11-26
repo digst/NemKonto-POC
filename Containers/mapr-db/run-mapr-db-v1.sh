@@ -1,0 +1,1 @@
+docker run -d --privileged --network bridge --rm -h maprdemo -p 7222:7222 -p 7221:7221 -p 42965:42965 -p 45817:45965 -p 42585:42585 -p 5181:5181 -p 45063:45063 -p 41903:41903 -p 43411:43411 -p 5660:5660 -p 51099:51099 -p 43062:43062 --name nemkonto-mapr-db-v1 digst/nemkonto-mapr-db:v1

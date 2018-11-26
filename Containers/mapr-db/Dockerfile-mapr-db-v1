@@ -1,0 +1,3 @@
+FROM docker.io/maprtech/maprdb-json-devpreview:34670
+ADD configure.sh /opt/mapr/server/
+EXPOSE 7222 7221 42965 45817 42585 5181 45063 41903 43411 5660 51099 43062

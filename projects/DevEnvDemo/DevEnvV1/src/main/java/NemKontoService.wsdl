@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="http://devenvdemo.poc.nemkonto.digst.dk" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://devenvdemo.poc.nemkonto.digst.dk">
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://devenvdemo.poc.nemkonto.digst.dk">
+            <xs:element name="getNemKontoFromID">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="personID" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getNemKontoFromIDResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getNemKontoFromIDRequest">
+        <wsdl:part name="parameters" element="ns:getNemKontoFromID"/>
+    </wsdl:message>
+    <wsdl:message name="getNemKontoFromIDResponse">
+        <wsdl:part name="parameters" element="ns:getNemKontoFromIDResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="NemKontoServicePortType">
+        <wsdl:operation name="getNemKontoFromID">
+            <wsdl:input message="ns:getNemKontoFromIDRequest" wsaw:Action="urn:getNemKontoFromID"/>
+            <wsdl:output message="ns:getNemKontoFromIDResponse" wsaw:Action="urn:getNemKontoFromIDResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="NemKontoServiceSoap11Binding" type="ns:NemKontoServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getNemKontoFromID">
+            <soap:operation soapAction="urn:getNemKontoFromID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="NemKontoServiceSoap12Binding" type="ns:NemKontoServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getNemKontoFromID">
+            <soap12:operation soapAction="urn:getNemKontoFromID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="NemKontoServiceHttpBinding" type="ns:NemKontoServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="getNemKontoFromID">
+            <http:operation location="getNemKontoFromID"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="NemKontoService">
+        <wsdl:port name="NemKontoServiceHttpSoap11Endpoint" binding="ns:NemKontoServiceSoap11Binding">
+            <soap:address location="http://localhost:8080/axis2/services/NemKontoService"/>
+        </wsdl:port>
+        <wsdl:port name="NemKontoServiceHttpSoap12Endpoint" binding="ns:NemKontoServiceSoap12Binding">
+            <soap12:address location="http://localhost:8080/axis2/services/NemKontoService"/>
+        </wsdl:port>
+        <wsdl:port name="NemKontoServiceHttpEndpoint" binding="ns:NemKontoServiceHttpBinding">
+            <http:address location="http://localhost:8080/axis2/services/NemKontoService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

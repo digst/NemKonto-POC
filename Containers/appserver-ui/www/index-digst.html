@@ -1,0 +1,144 @@
+<html>
+<head>
+	<title>NemKonto Hello World DIGST theme</title>
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+</head>
+<body style="background-color: white; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif;" >
+
+<div align="center"><img src="Digitaliseringsstyrelsen_RGB.png" alt="DIGST logo" /></div>
+
+<hr/>
+
+<script type="text/javascript">
+
+function doAccountToID(accounttype) {
+	$(document).ready(function() {
+	    $.ajax({
+	    		method: "GET",
+	        url: "http://localhost:7575/axis2/services/devenv-0.0.1-SNAPSHOT/getIDFromNemKonto?accounttype=" + accounttype + "&regno=" + $('#regno').val() + "&accountno=" + $('#accountno').val(),
+	        dataType: "xml",
+			success: function(xml) {
+				showNKFromID(xml);
+			}	        
+	    })}
+	 );
+}
+
+function doIdToNK(accounttype) {
+	$(document).ready(function() {
+	    $.ajax({
+	    		method: "GET",
+	        url: "http://localhost:7575/axis2/services/devenv-0.0.1-SNAPSHOT/getNemKontoFromID?accounttype=" + accounttype + "&id=" + $('#accountid').val(),
+	        dataType: "xml",
+			success: function(xml) {
+				showNKFromID(xml);
+			}	        
+	    })}
+	 );
+}
+
+function doIdHasAccount(accounttype) {
+	$(document).ready(function() {
+	    $.ajax({
+	    		method: "GET",
+	        url: "http://localhost:7575/axis2/services/devenv-0.0.1-SNAPSHOT/hasNemKontoFromID?accounttype=" + accounttype + "&id=" + $('#accountid').val(),
+	        dataType: "xml",
+			success: function(xml) {
+				showNMExists(xml);
+			}	        
+	    })}
+	 );
+}
+
+function showNMExists(xml) {
+	var exits = $(xml).find("ns\\:return").first().text();
+	if (exits == "true") {
+		$("#idToAccount").html("<b>ID har en NemKonto tilknyttet</b>");
+	}
+	else {
+		$("#idToAccount").html("<b>ID har ikke en NemKonto tilknyttet</b>");
+	}
+}
+
+function showNKFromID(xml) {
+	var kontoejerNavn = $(xml).find("ax21\\:kontoejerNavn").first().text();
+	var kontoejerID = $(xml).find("ax21\\:kontoejerID").first().text();
+	var kontoejertype = $(xml).find("ax21\\:kontoejertype").first().text();
+	var iban = $(xml).find("ax21\\:iban").first().text();
+	var SWIFTkode = $(xml).find("ax21\\:SWIFTkode").first().text();
+	
+	var nksnummer = $(xml).find("ax21\\:nksnummer").first().text();
+	var virksomhedssekundaerIdentifikation = $(xml).find("ax21\\:virksomhedssekundaerIdentifikation").first().text();
+	var virksomhedssekundaerIdentifikationstype = $(xml).find("ax21\\:virksomhedssekundaerIdentifikationstype").first().text();
+	var kontonummer = $(xml).find("ax21\\:kontonummer").first().text();
+	var kontotype = $(xml).find("ax21\\:kontotype").first().text();
+	var pengeinstitutNavn = $(xml).find("ax21\\:pengeinstitutNavn").first().text();
+	var pengeinstitutType = $(xml).find("ax21\\:pengeinstitutType").first().text();
+	var registreringsnummer = $(xml).find("ax21\\:registreringsnummer").first().text();
+	var startdato = $(xml).find("ax21\\:startdato").first().text();
+	var slutdato = $(xml).find("ax21\\:slutdato").first().text();
+	var valutakode = $(xml).find("ax21\\:valutakode").first().text();
+	
+	var adresse = $(xml).find("ax21\\:adresse").first().text();
+	var konteringsadressetype = $(xml).find("ax21\\:konteringsadressetype").first().text();
+	var land = $(xml).find("ax21\\:land").first().text();
+	var postdistrikt = $(xml).find("ax21\\:postdistrikt").first().text();
+	var postnr = $(xml).find("ax21\\:postnr").first().text();
+	
+	$("#idToAccount").html(
+		"<table>" +
+		"<tr><td colspan=2 align='center'><b>Kontoejer</b></td></tr>" +
+		
+		"<tr><td>Type</td><td>" + kontoejertype + "</td></tr>" +
+		"<tr><td>Identifikation</td><td>" + kontoejerID + "</td></tr>" +
+		"<tr><td>Nks nummer</td><td>" + nksnummer + "</td></tr>" +
+		"<tr><td>Sekundær virk. type</td><td>" + virksomhedssekundaerIdentifikationstype + "</td></tr>" +
+		"<tr><td>Sekundær virk. id</td><td>" + virksomhedssekundaerIdentifikation + "</td></tr>" +
+
+		"<tr><td colspan=2 align='center'><b>Konto</b></td></tr>" +
+		
+		"<tr><td>Navn</td><td>" + kontoejerNavn + "</td></tr>" +
+		"<tr><td>Kontotype</td><td>" + kontotype + "</td></tr>" +
+		"<tr><td>Reg nummer</td><td>" + registreringsnummer + "</td></tr>" +
+		"<tr><td>Kontonummer</td><td>" + kontonummer + "</td></tr>" +
+		"<tr><td>IBAN</td><td>" + iban + "</td></tr>" +
+		"<tr><td>Pengeinstitut type</td><td>" + pengeinstitutType + "</td></tr>" +
+		"<tr><td>Pengeinstitut</td><td>" + pengeinstitutNavn + "</td></tr>" +
+		"<tr><td>Start dato</td><td>" + startdato + "</td></tr>" +
+		"<tr><td>Slut dato</td><td>" + slutdato + "</td></tr>" +
+		"<tr><td>Valutakode</td><td>" + valutakode + "</td></tr>" +
+
+		"<tr><td colspan=2 align='center'><b>Adresse</b></td></tr>" +
+		
+		"<tr><td>Type</td><td>" + konteringsadressetype + "</td></tr>" +
+		"<tr><td>Adresse</td><td>" + adresse + "</td></tr>" +
+		"<tr><td>Postnr</td><td>" + postnr + "</td></tr>" +
+		"<tr><td>Postdistrikt</td><td>" + postdistrikt + "</td></tr>" +
+		"<tr><td>Land</td><td>" + land + "</td></tr>" +
+		"</table>"
+	);
+	
+}
+
+</script>
+
+<input type="text" maxlength="10" id="accountid" /><br>
+<button onclick="doIdHasAccount('Person');">Tjek NemKonto for person med id</button>
+<button onclick="doIdHasAccount('Virksomhed');">Tjek NemKonto for virksomhed med id</button>
+<br>
+<button onclick="doIdToNK('Person');">Find NemKonto for person med id</button>
+<button onclick="doIdToNK('Virksomhed');">Find NemKonto for virksomhed med id</button>
+
+<br /><br />
+<br>
+<input type="text" length="6" maxlength="6" id="regno" />&nbsp;<input type="text" maxlength="10" id="accountno" /><br>
+<button onclick="doAccountToID('Person');">Find person for NemKonto</button>
+<button onclick="doAccountToID('Virksomhed');">Find virksomhed for NemKonto</button>
+<br /><br />
+<hr/>
+<div id="idToAccount"></div>
+<hr/>
+
+
+</body>
+</html>
